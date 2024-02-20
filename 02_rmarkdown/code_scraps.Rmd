@@ -1,0 +1,33 @@
+---
+title: "notes"
+author: "Julia Kozak"
+date: "2024-03-14"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+geom_abline(slope=one thing, intercept=10)
+for a linear correlation figure 
+
+**PIVOT LONGER VERSION**
+```{r Cleaning Data 2, include=TRUE}
+#This is where I need to figure out how to merge the 18o and 2H data... 
+wiso_data=wiso_data %>%                   #overwrite previous defined object
+#Altering col titles to reflect actual data inside of them... must be careful that we are actually giving the correct titles to corresponding data. Beware. 
+  rename("18O_result"=result_7) %>%
+  rename("18O_repeat"=repeat_8) %>%
+  rename("2H_result"=result_10) %>%
+  rename("2H_repeat"=repeat_11) %>%
+#To be honest... the data set at this point could be left as it is. It is clean, clear, and under control in this wider version- but for our purposes we need to `pivot_longer` and start merging some of these cols together for the plot that I have in mind.  
+  pivot_longer(cols=c("18O_result", "2H_result"),           #take these two cols
+               names_to="isotope_result_type",              #make one col called this
+               values_to="result") %>%                      #use their values into this 
+  pivot_longer(cols=c("18O_repeat", "2H_repeat"),   #repeat process for diff parameters
+               names_to="repeat_type",
+               values_to="repeat_result") %>%
+  mutate(VSMOV_type=case_when(isotope_result_type=="18O_result"~"±0.2‰",
+                              isotope_result_type=="2H_result"~"±0.8‰", TRUE~NA))
+```

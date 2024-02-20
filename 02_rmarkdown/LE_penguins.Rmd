@@ -2,11 +2,83 @@
 title: "LE_penguins"
 author: "Julia K"
 date: "2024-02-20"
-output: html_document
+output: 
+  html_document:
+    keep_md: true
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  collapsed: no
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+________________________________________________________________________________
+## 1.) Loading Things: \
+### 1.1: Loading Packages \
+Load in any and all packages required to manipulate, transform, and illustrate the data given.
+```{r}
+#Functional:
+library(tidyverse)     #Package to process our data, stylized formation
+library(dplyr)         #Sub tidyverse package for data manipulation 
+library(magrittr)      #Package to help coding sequencing 
+library(janitor)       #Package for 'clean_names()' function
+library(readr)         #Package to help parse rectangular data
+library(stringr)       #Package to deal w/ NAs and manipulate cols/data
+library(lubridate)     #Package for date processing and plotting
+library(broom.mixed)   #Package to clean diverse model outputs
+#Aesthetics:
+library(ggplot2)       #Package to generate plotted data
+library(patchwork)     #Package for extensive plotted data configuration
+library(ggthemes)      #Package for extra themes, scales, and geoms for plotted data
+library(RColorBrewer)  #Package to colour plots
+library(viridis)       #Package to colour plots
+#Data:
+library(palmerpenguins)#Package containing all `palmerpenguin` data
 
-edited
+library(here)          #Package to set working directory via `.Rproj`
+getwd()                #Function to affirm working directory 
+```
+
+#### 1.2: Loading Data \
+```{r}
+penguins_raw=penguins_raw %>%
+
+glimpse()
+```
+
+```{r}
+penguins=penguins %>%
+  glimpse()
+```
+
+________________________________________________________________________________
+## 3.) Closing Questions
+
+### 3.1: Lecture Engagenment Question(s)
+**Q: Were you successful in cleaning the `palmerpenguins` raw data? Comment on three places where you would do something different.[5 marks]**
+1. 
+2. 
+3. 
+
+
+### 3.2: Closing Comments:
+- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
