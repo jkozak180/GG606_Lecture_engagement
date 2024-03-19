@@ -11,20 +11,83 @@ output:
   collapsed: no
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+
 
 ________________________________________________________________________________
 ## 1.) Loading Things: \
 ### 1.1: Loading Packages \
 Load in any and all packages required to manipulate, transform, and illustrate the data given.
-```{r Loading Packages, include=TRUE}
+
+```r
 #Functional:
 library(tidyverse)     #Package to process our data, stylized formation
+```
+
+```
+## Warning: package 'tidyverse' was built under R version 4.3.2
+```
+
+```
+## Warning: package 'ggplot2' was built under R version 4.3.3
+```
+
+```
+## Warning: package 'purrr' was built under R version 4.3.2
+```
+
+```
+## Warning: package 'forcats' was built under R version 4.3.2
+```
+
+```
+## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+## ✔ dplyr     1.1.3     ✔ readr     2.1.4
+## ✔ forcats   1.0.0     ✔ stringr   1.5.0
+## ✔ ggplot2   3.5.0     ✔ tibble    3.2.1
+## ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+## ✔ purrr     1.0.2     
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()
+## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+```
+
+```r
 library(dplyr)         #Sub tidyverse package for data manipulation 
 library(magrittr)      #Package to help coding sequencing 
+```
+
+```
+## 
+## Attaching package: 'magrittr'
+## 
+## The following object is masked from 'package:purrr':
+## 
+##     set_names
+## 
+## The following object is masked from 'package:tidyr':
+## 
+##     extract
+```
+
+```r
 library(janitor)       #Package for 'clean_names()' function
+```
+
+```
+## Warning: package 'janitor' was built under R version 4.3.2
+```
+
+```
+## 
+## Attaching package: 'janitor'
+## 
+## The following objects are masked from 'package:stats':
+## 
+##     chisq.test, fisher.test
+```
+
+```r
 library(readr)         #Package to help parse rectangular data
 library(stringr)       #Package to deal w/ NAs and manipulate cols/data
 library(lubridate)     #Package for date processing and plotting
@@ -32,12 +95,47 @@ library(broom.mixed)   #Package to clean diverse model outputs
 #Aesthetics:
 library(ggplot2)       #Package to generate plotted data
 library(patchwork)     #Package for extensive plotted data configuration
+```
+
+```
+## Warning: package 'patchwork' was built under R version 4.3.2
+```
+
+```r
 library(ggthemes)      #Package for extra themes, scales, and geoms for plotted data
+```
+
+```
+## Warning: package 'ggthemes' was built under R version 4.3.2
+```
+
+```r
 library(RColorBrewer)  #Package to colour plots
 library(viridis)       #Package to colour plots
+```
 
+```
+## Loading required package: viridisLite
+```
+
+```
+## Warning: package 'viridisLite' was built under R version 4.3.2
+```
+
+```r
 library(here)          #Package to set working directory via `.Rproj`
+```
+
+```
+## here() starts at C:/Users/jkoza/Documents/GRADUATE SCHOOL/2. COURSEWORK/GG606/GG606_Lecture_engagement
+```
+
+```r
 getwd()                #Function to affirm working directory 
+```
+
+```
+## [1] "C:/Users/jkoza/Documents/GRADUATE SCHOOL/2. COURSEWORK/GG606/GG606_Lecture_engagement"
 ```
 
 ### 1.2: Loading Data \
@@ -45,17 +143,15 @@ getwd()                #Function to affirm working directory
 The raw water isotope excel workbook (.xslx) provided to us contains three separate spreadsheets: Sample Info, Trendline, and Chemistry. 
 The last spreadsheet, 'Chemistry' seems to be missing data from an internal workbook reference. There is no additional data included, nor are there any other formulas which are dependent on these references. It has been eliminated from this assignment. \
 The second spreadsheet, 'Trendline' has... a lot going on: a.) it includes a plot of 2H vs. 18O data that cannot be rendered within R and b.) it plots the respective 18O and 2H data (VSMOW  ± 0.2‰ and VSMOW  ± 0.8‰, respectively) from the 'Sample Info' spreadsheet. The Global Meteoric Line values correspond to the known linear relationship(s) between theses two parameters. Since these values can be taken from within the 'Sample Info' spreadsheet, this spreadsheet is the only one which has been converted to a `.csv` and used here. 
-```{r Loading Data, include=FALSE}
-#Note: loading this datasheet into RStudio takes a little while, since it is technically a large dataset. Give it a second. 
-wiso_data=read_csv(here("01_rawdata","water_iso_31june2022_sample_info.csv"))
-```
+
 
 
 ________________________________________________________________________________
 ## 2.) Cleaning Data: \
 
 Upon loading the data in, I was able to see what RStudio did with it, then went from there. Comments of steps denoted below. 
-```{r Cleaning Data 1, include=TRUE}
+
+```r
 wiso_data=wiso_data %>%                        #overwrite previous defined object 
   clean_names() %>%                                            #clean col headers
   select(sample, date, lab_number,result_7,repeat_8, result_10, repeat_11) %>%
@@ -66,7 +162,8 @@ wiso_data=wiso_data %>%                        #overwrite previous defined objec
 ```
 
 I needed to break up the cleaning code chunk in order for it to load and recognize my commands properly. For example, when trying to input a value into a newly changed column title, sometimes the new column title had not yet been registered within the environment and thus could not recognize the code command. 
-```{r Cleaning Data 2, include=TRUE}
+
+```r
 #This is where I need to figure out how to merge the 18o and 2H data... 
 wiso_data=wiso_data %>%                   #overwrite previous defined object
 #Altering col titles to reflect actual data inside of them... must be careful that we are actually giving the correct titles to corresponding data. Beware. 
@@ -90,7 +187,8 @@ ________________________________________________________________________________
 **2. Summarize the data with a plot of δ18O-H2O (x axis) vs δ2H-H2O (y axis). Draw on the Global Meteoric Water Line (δ2H = 8.0 × δ18O + 10‰). This is the most common plot to begin visualizing these types of data. [2 marks]** \
 - I manually inputted the GML values into the plot, in keeping with what the company did whether that be right or (mostly) wrong. 18O: x -6 and -40 // 2H: y -38 and -310 \
 - If we wanted we could have made R calculate this and then input our results onto the figure (good for if we need to do lots of these) but keeping in the sprit of the bare minimum, here is our lovely plot: 
-```{r Plotting Data, include=TRUE}
+
+```r
 wiso_data_plot=wiso_data %>%                            #create callable object
 #Generate the plot:
   ggplot() +
@@ -111,15 +209,22 @@ wiso_data_plot=wiso_data %>%                            #create callable object
 print(wiso_data_plot)                     #View object created appears properly
 ```
 
+```
+## Warning in geom_segment(aes(x = -40, y = -310, xend = -6, yend = -38, colour = "Global Meteoric \n                   Water Line")): All aesthetics have length 1, but the data has 35 rows.
+## ℹ Did you mean to use `annotate()`?
+```
+
+![](LE_isotopes_files/figure-html/Plotting Data-1.png)<!-- -->
+
 ________________________________________________________________________________
 ## 4.) Conclusion: \
 
 ### 4.1: Lecture Engagenment Question(s) \
 **1. Were you successful in importing and cleaning the data? Comment on two places where you were tripped up. [3 marks]** \
-- Yes. Data ended up being cleaned and plotted. \
-- Firstly, I needed to observe the initial condition of the excel workbook prior to converting and uploading the data into RStudio, since this would give me a better idea of what form the data needed to be manipulated into. It definitely took me a hot second to understand what was going on, so the first thing that I would say tripped me up was understanding the data presented in the form it was and knowing what actually could be used in RStudio. \
-- Secondly, thinking about how to get the data types and values into a single column took my brain a moment to also render. Some lines of code seem redundant, but they help keep me organized in understanding what I've done and can easily be removed if I no longer want them. One thing that was a red flag was someone incorrectly (?) inputting the date as June 31, 2022 when June only has 30 days. This could be an input error, or is maybe why only June 2022 is used in the date column here. I don't know. \
-- I accidentally `pivot_longer`ed everything then couldn't graph 18O by 2H lol (code in 'code_scraps.Rmd' file). Getting the VSMOV values to display correctly tripped me up since result values were already displaying kinda twice because of the `repeat_type` column but it's not too too big of a deal, so whatever. Fixed that with a `case_when()` slap in which theeeen had to be removed again because I un-`pivoted_longer` everything. AH. In another day I would've spent more time trying to get those values in the data frame.\
+-Yes. Data ended up being cleaned and plotted. \
+-Firstly, I needed to observe the initial condition of the excel workbook prior to converting and uploading the data into RStudio, since this would give me a better idea of what form the data needed to be manipulated into. It definitely took me a hot second to understand what was going on, so the first thing that I would say tripped me up was understanding the data presented in the form it was and knowing what actually could be used in RStudio. \
+-Secondly, thinking about how to get the data types and values into a single column took my brain a moment to also render. Some lines of code seem redundant, but they help keep me organized in understanding what I've done and can easily be removed if I no longer want them. One thing that was a red flag was someone incorrectly (?) inputting the date as June 31, 2022 when June only has 30 days. This could be an input error, or is maybe why only June 2022 is used in the date column here. I don't know. \
+-I accidentally `pivot_longer`ed everything then couldn't graph 18O by 2H lol (code in 'code_scraps.Rmd' file). Getting the VSMOV values to display correctly tripped me up since result values were already displaying kinda twice because of the `repeat_type` column but it's not too too big of a deal, so whatever. Fixed that with a `case_when()` slap in which theeeen had to be removed again because I un-`pivoted_longer` everything. AH. In another day I would've spent more time trying to get those values in the data frame.\
 
 
 
