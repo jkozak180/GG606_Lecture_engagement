@@ -11,39 +11,17 @@ output:
   collapsed: no
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+
 ________________________________________________________________________________
 ## 1.) Loading Things: \
 ### 1.1: Loading Packages \
 Load in any and all packages required to manipulate, transform, and illustrate the data given.
-```{r Loading Packages, include=FALSE}
-#Functional:
-library(tidyverse)     #Package to process our data, stylized formation
-library(dplyr)         #Sub tidyverse package for data manipulation 
-library(magrittr)      #Package to help coding sequencing 
-library(janitor)       #Package for 'clean_names()' function
-library(readr)         #Package to help parse rectangular data
-library(stringr)       #Package to deal w/ NAs and manipulate cols/data
-library(lubridate)     #Package for date processing and plotting
-library(broom.mixed)   #Package to clean diverse model outputs
-#Aesthetics:
-library(ggplot2)       #Package to generate plotted data
-library(patchwork)     #Package for extensive plotted data configuration
-library(ggthemes)      #Package for extra themes, scales, and geoms for plotted data
-library(RColorBrewer)  #Package to colour plots
-library(viridis)       #Package to colour plots
-#Data:
-library(palmerpenguins)#Package containing all `palmerpenguin` data
 
-library(here)          #Package to set working directory via `.Rproj`
-getwd()                #Function to affirm working directory 
-```
 
 #### 1.2: Loading Data \
 Since our data sets are a pre-generated package within R, the data has already been loaded into our work space. Below, we are simply pulling from the package and registering it as a callable object. 
-```{r Loading Datasets, include=TRUE}
+
+```r
 penguins_raw=penguins_raw
 penguins=penguins
 ```
@@ -52,7 +30,8 @@ ________________________________________________________________________________
 ## 2.) Cleaning Data: \
 
 Here, we will spend a bit of time transforming the object `penguins_raw` into something that appears more like the `penguins` data set.  
-```{r Cleaning Data 1, include=TRUE}
+
+```r
 penguins_raw_clean=penguins_raw %>%                  #create new object
   clean_names() %>%                                  #make col headers clean
   select(species, island, culmen_length_mm, culmen_depth_mm, flipper_length_mm, 
@@ -67,7 +46,8 @@ penguins_raw_clean=penguins_raw %>%                  #create new object
 - Under the `species` column Adelie vs. Gentoo and Chinstrap are followed by 'Penguin' and 'penguin' respectively, which was an absolute pain to troubleshoot without overwriting, so it had to be in only one line of code.\
 - I had a feeling that the year column in `penguins_raw_clean` was off. Here it was registering as a character class (makes sense given method of creation), whereas in `penguins` it registered as an integer, so I went back and added in the `as.x` case during the creation to make it match. 
 
-```{r Cleaning Data 2, include=TRUE}
+
+```r
 #Start new code chunk to preserve previous code actions 
 penguins_raw_clean=penguins_raw_clean %>%                 #overwrite previous data frame
   mutate(species=str_replace(species, "(?i)\\s*penguin.*", ""))%>% #wipe everything post
@@ -84,13 +64,41 @@ penguins_raw_clean=penguins_raw_clean %>%                 #overwrite previous da
 ```
 
 Look at each data frame so that they appear as the 'same' clean final version. 
-```{r Looking at Final Products 1, include=TRUE}
+
+```r
 penguins_raw_clean %>%
   glimpse()
 ```
-```{r Looking at Final Products 2, include=TRUE}
+
+```
+## Rows: 344
+## Columns: 8
+## $ species           <fct> Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adel…
+## $ island            <fct> Torgersen, Torgersen, Torgersen, Torgersen, Torgerse…
+## $ bill_length_mm    <dbl> 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, 34.1, …
+## $ bill_depth_mm     <dbl> 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18.1, …
+## $ flipper_length_mm <int> 181, 186, 195, NA, 193, 190, 181, 195, 193, 190, 186…
+## $ body_mass_g       <int> 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475, …
+## $ sex               <fct> male, female, female, NA, female, male, female, male…
+## $ year              <int> 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007…
+```
+
+```r
 penguins %>%
   glimpse()
+```
+
+```
+## Rows: 344
+## Columns: 8
+## $ species           <fct> Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adel…
+## $ island            <fct> Torgersen, Torgersen, Torgersen, Torgersen, Torgerse…
+## $ bill_length_mm    <dbl> 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, 34.1, …
+## $ bill_depth_mm     <dbl> 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18.1, …
+## $ flipper_length_mm <int> 181, 186, 195, NA, 193, 190, 181, 195, 193, 190, 186…
+## $ body_mass_g       <int> 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475, …
+## $ sex               <fct> male, female, female, NA, female, male, female, male…
+## $ year              <int> 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007…
 ```
 
 ________________________________________________________________________________
