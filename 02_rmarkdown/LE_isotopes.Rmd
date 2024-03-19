@@ -94,7 +94,7 @@ ________________________________________________________________________________
 wiso_data_plot=wiso_data %>%                            #create callable object
 #Generate the plot:
   ggplot() +
-  geom_point(aes(x=`18O_result`, y=`2H_result`)) +
+  geom_point(aes(x=`18O_result`, y=`2H_result`, alpha=0.5)) +
   scale_x_continuous(limits=c(-40,-6)) +               #adjust plot x-axis limits 
   scale_y_continuous(limits=c(-310,-38)) +                    #to match GML range
   geom_segment(aes(x=-40, y=-310, xend=-6, yend=-38, colour="Global Meteoric 
@@ -102,6 +102,7 @@ wiso_data_plot=wiso_data %>%                            #create callable object
 #Edit the scales:
   theme_minimal() +
   scale_color_manual(values="red") +
+  guides(alpha=FALSE) +
 #Generate label titles: 
   theme(legend.position="top") +
   labs(x=expression(atop(δ^{18}*O - H[2]*O)),                     

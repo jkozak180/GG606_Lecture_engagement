@@ -192,7 +192,7 @@ ________________________________________________________________________________
 wiso_data_plot=wiso_data %>%                            #create callable object
 #Generate the plot:
   ggplot() +
-  geom_point(aes(x=`18O_result`, y=`2H_result`)) +
+  geom_point(aes(x=`18O_result`, y=`2H_result`, alpha=0.5)) +
   scale_x_continuous(limits=c(-40,-6)) +               #adjust plot x-axis limits 
   scale_y_continuous(limits=c(-310,-38)) +                    #to match GML range
   geom_segment(aes(x=-40, y=-310, xend=-6, yend=-38, colour="Global Meteoric 
@@ -200,12 +200,23 @@ wiso_data_plot=wiso_data %>%                            #create callable object
 #Edit the scales:
   theme_minimal() +
   scale_color_manual(values="red") +
+  guides(alpha=FALSE) +
 #Generate label titles: 
   theme(legend.position="top") +
   labs(x=expression(atop(δ^{18}*O - H[2]*O)),                     
        y=expression(δ^{2}*H - H[2]*O),
       colour="")
+```
 
+```
+## Warning: The `<scale>` argument of `guides()` cannot be `FALSE`. Use "none" instead as
+## of ggplot2 3.3.4.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.
+```
+
+```r
 print(wiso_data_plot)                     #View object created appears properly
 ```
 
@@ -221,10 +232,10 @@ ________________________________________________________________________________
 
 ### 4.1: Lecture Engagenment Question(s) \
 **1. Were you successful in importing and cleaning the data? Comment on two places where you were tripped up. [3 marks]** \
--Yes. Data ended up being cleaned and plotted. \
--Firstly, I needed to observe the initial condition of the excel workbook prior to converting and uploading the data into RStudio, since this would give me a better idea of what form the data needed to be manipulated into. It definitely took me a hot second to understand what was going on, so the first thing that I would say tripped me up was understanding the data presented in the form it was and knowing what actually could be used in RStudio. \
--Secondly, thinking about how to get the data types and values into a single column took my brain a moment to also render. Some lines of code seem redundant, but they help keep me organized in understanding what I've done and can easily be removed if I no longer want them. One thing that was a red flag was someone incorrectly (?) inputting the date as June 31, 2022 when June only has 30 days. This could be an input error, or is maybe why only June 2022 is used in the date column here. I don't know. \
--I accidentally `pivot_longer`ed everything then couldn't graph 18O by 2H lol (code in 'code_scraps.Rmd' file). Getting the VSMOV values to display correctly tripped me up since result values were already displaying kinda twice because of the `repeat_type` column but it's not too too big of a deal, so whatever. Fixed that with a `case_when()` slap in which theeeen had to be removed again because I un-`pivoted_longer` everything. AH. In another day I would've spent more time trying to get those values in the data frame.\
+- Yes. Data ended up being cleaned and plotted. \
+- Firstly, I needed to observe the initial condition of the excel workbook prior to converting and uploading the data into RStudio, since this would give me a better idea of what form the data needed to be manipulated into. It definitely took me a hot second to understand what was going on, so the first thing that I would say tripped me up was understanding the data presented in the form it was and knowing what actually could be used in RStudio. \
+- Secondly, thinking about how to get the data types and values into a single column took my brain a moment to also render. Some lines of code seem redundant, but they help keep me organized in understanding what I've done and can easily be removed if I no longer want them. One thing that was a red flag was someone incorrectly (?) inputting the date as June 31, 2022 when June only has 30 days. This could be an input error, or is maybe why only June 2022 is used in the date column here. I don't know. \
+- I accidentally `pivot_longer`ed everything then couldn't graph 18O by 2H lol (code in 'code_scraps.Rmd' file). Getting the VSMOV values to display correctly tripped me up since result values were already displaying kinda twice because of the `repeat_type` column but it's not too too big of a deal, so whatever. Fixed that with a `case_when()` slap in which theeeen had to be removed again because I un-`pivoted_longer` everything. AH. In another day I would've spent more time trying to get those values in the data frame.\
 
 
 
